@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar Kilbi — Data Scientist, AI Engineer & IT Systems Administrator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #080d14;
+            --secondary: #0f1a2e;
+            --surface: #111d2f;
+            --surface2: #162440;
+            --accent: #2563eb;
+            --accent-light: #3b82f6;
+            --accent-glow: rgba(37, 99, 235, 0.12);
+            --teal: #0d9488;
+            --teal-light: #14b8a6;
+            --amber: #d97706;
+            --amber-light: #f59e0b;
+            --violet: #7c3aed;
+            --violet-light: #8b5cf6;
+            --rose: #e11d48;
+            --rose-light: #f43f5e;
+            --green: #059669;
+            --green-light: #10b981;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: rgba(148, 163, 184, 0.08);
+            --border-hover: rgba(59, 130, 246, 0.25);
+            --card-bg: rgba(15, 26, 46, 0.7);
+            --card-bg-hover: rgba(22, 36, 64, 0.85);
+            --gradient-accent: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            --gradient-teal: linear-gradient(135deg, #0d9488 0%, #2563eb 100%);
+            --gradient-amber: linear-gradient(135deg, #d97706 0%, #e11d48 100%);
+            --gradient-green: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ANIMATED MESH BACKGROUND */
+        .bg-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: -2; pointer-events: none;
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(37,99,235,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(124,58,237,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 50% at 50% 100%, rgba(13,148,136,0.05) 0%, transparent 50%);
+        }
+        .bg-canvas::before {
+            content: ''; position: absolute; width: 900px; height: 900px;
+            top: -250px; left: -250px;
+            background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+            animation: drift1 20s ease-in-out infinite;
+        }
+        .bg-canvas::after {
+            content: ''; position: absolute; width: 700px; height: 700px;
+            bottom: -150px; right: -150px;
+            background: radial-gradient(circle, rgba(124,58,237,0.05) 0%, transparent 70%);
+            animation: drift2 25s ease-in-out infinite;
+        }
+        @keyframes drift1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(80px,-50px) scale(1.1); } }
+        @keyframes drift2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-60px,60px) scale(1.15); } }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: -1;
+            background-image: 
+                linear-gradient(rgba(37,99,235,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37,99,235,0.025) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 70%);
+        }
+
+        /* FLOATING PARTICLES */
+        .particles {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute; width: 3px; height: 3px;
+            background: rgba(59,130,246,0.3); border-radius: 50%;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            padding: 1.1rem 2rem;
+            background: rgba(8, 13, 20, 0.75);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000; transition: all 0.3s ease;
+        }
+        nav.scrolled { padding: 0.75rem 2rem; background: rgba(8,13,20,0.92); }
+
+        .nav-container {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 1.4rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            letter-spacing: -0.5px;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem;
+            transition: color 0.3s ease; position: relative;
+            letter-spacing: 0.3px;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px; background: var(--accent-light);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-menu-btn {
+            display: none; background: none; border: none;
+            color: var(--text); font-size: 1.5rem; cursor: pointer;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex;
+            align-items: center; justify-content: center;
+            padding: 7rem 2rem 5rem; position: relative;
+        }
+        .hero-content { max-width: 1100px; text-align: center; }
+
+        .profile-pic-wrapper {
+            position: relative;
+            width: 160px; height: 160px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 0.7s ease both;
+        }
+        .profile-pic {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid transparent;
+            background: var(--gradient-accent);
+            padding: 3px;
+            box-shadow: 0 0 40px rgba(37,99,235,0.3), 0 0 80px rgba(124,58,237,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(37,99,235,0.4), 0 0 100px rgba(124,58,237,0.2);
+        }
+        .profile-pic-ring {
+            position: absolute; inset: -8px;
+            border-radius: 50%;
+            border: 1px solid rgba(59,130,246,0.15);
+            animation: pulse-ring 3s ease-in-out infinite;
+        }
+        .profile-pic-ring:nth-child(2) { inset: -16px; animation-delay: 1s; border-color: rgba(124,58,237,0.1); }
+        @keyframes pulse-ring {
+            0%,100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.03); opacity: 1; }
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.45rem 1.1rem;
+            background: rgba(16,185,129,0.1);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 50px; font-size: 0.82rem;
+            color: var(--green-light); margin-bottom: 1.5rem;
+            animation: fadeInUp 0.7s ease 0.1s both;
+        }
+        .hero-badge .dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: var(--green-light);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.3); } }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800; line-height: 1.1;
+            margin-bottom: 1rem; letter-spacing: -1.5px;
+            animation: fadeInUp 0.7s ease 0.2s both;
+        }
+        .hero h1 .name {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero h1 .role { color: var(--text-muted); font-weight: 700; font-size: 0.65em; }
+
+        .hero-tagline {
+            font-size: 1.15rem; color: var(--text-muted);
+            margin-bottom: 1rem; animation: fadeInUp 0.7s ease 0.3s both;
+        }
+        .hero-desc {
+            color: var(--text-dim); font-size: 1rem; max-width: 640px;
+            margin: 0 auto 2.5rem; animation: fadeInUp 0.7s ease 0.4s both;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 0.7s ease 0.5s both;
+        }
+        .btn {
+            padding: 0.85rem 2rem; border-radius: 10px;
+            font-weight: 600; font-size: 0.93rem;
+            text-decoration: none; transition: all 0.25s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            cursor: pointer; border: none; font-family: 'DM Sans', sans-serif;
+        }
+        .btn-primary {
+            background: var(--gradient-accent); color: white;
+            box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,99,235,0.45); }
+        .btn-secondary {
+            background: transparent; color: var(--text);
+            border: 1px solid rgba(148,163,184,0.15);
+        }
+        .btn-secondary:hover { background: var(--surface2); border-color: var(--border-hover); transform: translateY(-2px); }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 3rem;
+            margin-top: 3.5rem; animation: fadeInUp 0.7s ease 0.6s both;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem; font-weight: 800;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-label {
+            font-size: 0.75rem; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0.2rem;
+        }
+
+        /* TRUST BADGES */
+        .trust-badges {
+            display: flex; justify-content: center; gap: 2rem;
+            margin-top: 2.5rem; flex-wrap: wrap;
+            animation: fadeInUp 0.7s ease 0.7s both;
+        }
+        .trust-badge {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(148,163,184,0.05);
+            border: 1px solid rgba(148,163,184,0.08);
+            border-radius: 8px;
+            font-size: 0.78rem; color: var(--text-dim);
+        }
+        .trust-badge i { color: var(--accent-light); }
+
+        /* SECTIONS */
+        section {
+            padding: 5rem 2rem; max-width: 1200px; margin: 0 auto;
+        }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-tag {
+            display: inline-block; padding: 0.3rem 1rem;
+            background: var(--accent-glow);
+            border: 1px solid rgba(59,130,246,0.18);
+            border-radius: 50px; font-size: 0.75rem;
+            color: var(--accent-light); text-transform: uppercase;
+            letter-spacing: 2.5px; margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.5px;
+        }
+        .section-subtitle { color: var(--text-muted); max-width: 620px; margin: 0 auto; }
+
+        /* TECH STACK */
+        .tech-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+        }
+        .tech-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.5rem;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .tech-card::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: var(--gradient-accent);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        .tech-card:hover {
+            background: var(--card-bg-hover); border-color: var(--border-hover);
+            transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .tech-card:hover::before { transform: scaleX(1); }
+        .tech-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .tech-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+        }
+        .ti-blue { background: rgba(37,99,235,0.15); color: #60a5fa; }
+        .ti-purple { background: rgba(124,58,237,0.15); color: #a78bfa; }
+        .ti-green { background: rgba(5,150,105,0.15); color: #34d399; }
+        .ti-amber { background: rgba(217,119,6,0.15); color: #fbbf24; }
+        .ti-rose { background: rgba(225,29,72,0.15); color: #fb7185; }
+        .ti-cyan { background: rgba(6,182,212,0.15); color: #22d3ee; }
+        .ti-teal { background: rgba(13,148,136,0.15); color: #2dd4bf; }
+        .ti-pink { background: rgba(219,39,119,0.15); color: #f472b6; }
+        .tech-card h3 { font-size: 1.05rem; font-weight: 600; font-family: 'Syne', sans-serif; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+        .tech-tag {
+            padding: 0.3rem 0.7rem; background: rgba(148,163,184,0.08);
+            border-radius: 6px; font-size: 0.78rem; color: var(--text-muted);
+            border: 1px solid rgba(148,163,184,0.1);
+        }
+
+        /* EXPERIENCE TIMELINE */
+        .timeline { position: relative; padding-left: 2.5rem; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--violet), transparent);
+        }
+        .timeline-item { position: relative; padding-bottom: 3rem; }
+        .timeline-dot {
+            position: absolute; left: -2.5rem; top: 0.4rem;
+            width: 14px; height: 14px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--primary);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.2);
+            margin-left: -6px;
+        }
+        .timeline-dot.violet { background: var(--violet); box-shadow: 0 0 0 4px rgba(124,58,237,0.2); }
+        .timeline-dot.teal { background: var(--teal); box-shadow: 0 0 0 4px rgba(13,148,136,0.2); }
+        .timeline-dot.amber { background: var(--amber); box-shadow: 0 0 0 4px rgba(217,119,6,0.2); }
+
+        .timeline-header { margin-bottom: 0.75rem; }
+        .timeline-date { font-size: 0.82rem; color: var(--accent-light); font-weight: 600; margin-bottom: 0.3rem; letter-spacing: 0.3px; }
+        .timeline-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .timeline-company {
+            color: var(--text-muted); font-size: 0.93rem;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .timeline-company i { font-size: 0.8rem; }
+        .timeline-desc { color: var(--text-dim); font-size: 0.9rem; line-height: 1.75; margin-bottom: 1rem; }
+        .timeline-achievements { display: flex; flex-direction: column; gap: 0.5rem; }
+        .achievement {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            font-size: 0.88rem; color: var(--text-muted);
+        }
+        .achievement i { color: var(--green-light); margin-top: 0.2rem; font-size: 0.75rem; flex-shrink: 0; }
+        .achievement strong { color: var(--text); }
+
+        /* EDUCATION */
+        .edu-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .edu-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.75rem;
+            transition: all 0.3s ease; position: relative; overflow: hidden;
+        }
+        .edu-card:hover {
+            border-color: var(--border-hover); transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+        }
+        .edu-year {
+            font-size: 0.78rem; color: var(--accent-light); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.6rem;
+        }
+        .edu-degree { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; }
+        .edu-school { color: var(--text-muted); font-size: 0.9rem; }
+        .edu-icon {
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            width: 42px; height: 42px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* PROJECTS */
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+        .project-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden; transition: all 0.3s ease;
+            display: flex; flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-5px); border-color: var(--border-hover);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.4);
+        }
+        .project-stripe { height: 3px; background: var(--gradient-accent); }
+        .project-stripe.teal { background: var(--gradient-teal); }
+        .project-stripe.violet { background: linear-gradient(135deg, #7c3aed, #db2777); }
+        .project-stripe.amber { background: linear-gradient(135deg, #d97706, #dc2626); }
+        .project-stripe.green { background: var(--gradient-green); }
+        .project-body { padding: 1.5rem; flex: 1; }
+        .project-cat {
+            display: inline-block; padding: 0.2rem 0.7rem;
+            background: var(--accent-glow); border-radius: 50px;
+            font-size: 0.72rem; color: var(--accent-light);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem;
+        }
+        .project-card h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+        .project-desc { color: var(--text-dim); font-size: 0.88rem; line-height: 1.7; }
+        .project-metrics {
+            display: flex; gap: 1.25rem; padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+        .metric { display: flex; align-items: center; gap: 0.4rem; font-size: 0.83rem; color: var(--text-muted); }
+        .metric i { color: var(--accent-light); font-size: 0.75rem; }
+        .metric strong { color: var(--text); }
+        .project-tech { padding: 0 1.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .project-tech span {
+            padding: 0.2rem 0.6rem; background: rgba(148,163,184,0.07);
+            border-radius: 5px; font-size: 0.75rem; color: var(--text-dim);
+        }
+
+        /* PROJECT SHOWCASE / MEDIA */
+        .showcase-section {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; padding: 2.5rem; margin-top: 2.5rem;
+            overflow: hidden;
+        }
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+        .showcase-media {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(148,163,184,0.1);
+            background: rgba(8,13,20,0.5);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .showcase-media video,
+        .showcase-media img {
+            width: 100%;
+            display: block;
+            border-radius: 14px;
+        }
+        .showcase-media .media-label {
+            position: absolute;
+            top: 12px; left: 12px;
+            padding: 0.3rem 0.8rem;
+            background: rgba(8,13,20,0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(148,163,184,0.15);
+            border-radius: 50px;
+            font-size: 0.72rem;
+            color: var(--accent-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .showcase-media .media-play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 56px; height: 56px;
+            background: rgba(37,99,235,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+        }
+        .showcase-media .media-play-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--accent-light);
+        }
+        .showcase-info h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem; font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+        .showcase-info p {
+            color: var(--text-dim); font-size: 0.92rem;
+            line-height: 1.75; margin-bottom: 1.25rem;
+        }
+        .showcase-features {
+            display: flex; flex-direction: column; gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        .showcase-feature {
+            display: flex; align-items: center; gap: 0.6rem;
+            font-size: 0.88rem; color: var(--text-muted);
+        }
+        .showcase-feature i {
+            width: 24px; height: 24px;
+            border-radius: 6px;
+            background: rgba(37,99,235,0.12);
+            color: var(--accent-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; flex-shrink: 0;
+        }
+        .showcase-chat-preview {
+            max-width: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(148,163,184,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .showcase-chat-preview img {
+            width: 100%; display: block;
+        }
+
+        /* DASHBOARD SHOWCASE */
+        .dashboard-showcase {
+            margin-top: 3rem;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .dashboard-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+        .dashboard-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .dashboard-card:hover img {
+            transform: scale(1.05);
+        }
+        .dashboard-card-body {
+            padding: 1.25rem;
+        }
+        .dashboard-card-body h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem; font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        .dashboard-card-body p {
+            font-size: 0.78rem; color: var(--text-dim);
+            line-height: 1.6;
+        }
+        .dashboard-card-body .db-tag {
+            display: inline-block;
+            margin-top: 0.6rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(37,99,235,0.1);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--accent-light);
+            font-weight: 600;
+        }
+        .dashboard-card .db-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8,13,20,0.9) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* ARCHITECTURE */
+        .arch-section {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 2rem; margin-top: 2rem;
+        }
+        .arch-diagram { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1.5rem; }
+        .arch-layer { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+        .arch-box {
+            padding: 0.65rem 1.1rem; background: rgba(37,99,235,0.1);
+            border: 1px solid rgba(37,99,235,0.2); border-radius: 8px;
+            font-size: 0.82rem; font-weight: 500; color: var(--accent-light);
+            text-align: center; min-width: 110px;
+        }
+        .arch-box small { display: block; font-size: 0.7rem; color: var(--text-dim); margin-top: 0.15rem; }
+        .arch-box.sec { background: rgba(124,58,237,0.1); border-color: rgba(124,58,237,0.2); color: #a78bfa; }
+        .arch-box.grn { background: rgba(5,150,105,0.1); border-color: rgba(5,150,105,0.2); color: #34d399; }
+        .arch-box.amb { background: rgba(217,119,6,0.1); border-color: rgba(217,119,6,0.2); color: #fbbf24; }
+        .arch-box.cyn { background: rgba(6,182,212,0.1); border-color: rgba(6,182,212,0.2); color: #22d3ee; }
+        .arch-label { text-align: center; font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+        .arch-arrow { text-align: center; color: var(--text-dim); font-size: 1rem; }
+
+        /* CERTIFICATIONS */
+        .certs-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+        .cert-card {
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1.2rem; background: var(--card-bg);
+            border: 1px solid var(--border); border-radius: 12px;
+            transition: all 0.25s ease;
+        }
+        .cert-card:hover { border-color: var(--border-hover); transform: translateX(4px); }
+        .cert-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; flex-shrink: 0;
+        }
+        .ci-blue { background: rgba(37,99,235,0.15); color: #60a5fa; }
+        .ci-purple { background: rgba(124,58,237,0.15); color: #a78bfa; }
+        .ci-green { background: rgba(5,150,105,0.15); color: #34d399; }
+        .ci-amber { background: rgba(217,119,6,0.15); color: #fbbf24; }
+        .ci-rose { background: rgba(225,29,72,0.15); color: #fb7185; }
+        .ci-cyan { background: rgba(6,182,212,0.15); color: #22d3ee; }
+        .ci-teal { background: rgba(13,148,136,0.15); color: #2dd4bf; }
+        .ci-pink { background: rgba(219,39,119,0.15); color: #f472b6; }
+        .cert-info h4 { font-size: 0.93rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .cert-info p { font-size: 0.78rem; color: var(--text-dim); }
+
+        /* LANGUAGES */
+        .lang-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .lang-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.4rem; text-align: center;
+            transition: all 0.25s ease;
+        }
+        .lang-card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+        .lang-flag { font-size: 2rem; margin-bottom: 0.6rem; }
+        .lang-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .lang-level {
+            display: inline-block; padding: 0.25rem 0.75rem;
+            border-radius: 50px; font-size: 0.78rem; font-weight: 600;
+        }
+        .ll-native { background: rgba(5,150,105,0.15); color: var(--green-light); }
+        .ll-c1 { background: rgba(37,99,235,0.15); color: var(--accent-light); }
+        .ll-b2 { background: rgba(124,58,237,0.15); color: var(--violet-light); }
+        .lang-desc { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.4rem; }
+
+        /* VOLUNTEERS */
+        .volunteer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .volunteer-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.4rem;
+            transition: all 0.25s ease; display: flex; align-items: flex-start; gap: 1rem;
+        }
+        .volunteer-card:hover { border-color: var(--border-hover); }
+        .vol-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
+        }
+        .vol-title { font-weight: 600; font-size: 0.93rem; margin-bottom: 0.2rem; }
+        .vol-period { font-size: 0.78rem; color: var(--text-dim); }
+
+        /* CONTACT */
+        .contact-section { text-align: center; padding: 5rem 2rem; }
+        .contact-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 24px; padding: 3.5rem 2.5rem;
+            max-width: 640px; margin: 0 auto; position: relative; overflow: hidden;
+        }
+        .contact-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px; background: var(--gradient-accent);
+        }
+        .contact-card::after {
+            content: '';
+            position: absolute; bottom: -100px; right: -100px;
+            width: 250px; height: 250px;
+            background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+        }
+        .contact-card h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.5px;
+        }
+        .contact-card p { color: var(--text-muted); margin-bottom: 2rem; line-height: 1.75; }
+        .contact-links { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+        .contact-link {
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 1.4rem; background: rgba(37,99,235,0.1);
+            border: 1px solid rgba(37,99,235,0.2); border-radius: 10px;
+            color: var(--accent-light); text-decoration: none;
+            font-weight: 500; font-size: 0.88rem; transition: all 0.25s ease;
+        }
+        .contact-link:hover { background: rgba(37,99,235,0.2); transform: translateY(-2px); }
+
+        /* FOOTER */
+        footer {
+            text-align: center; padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim); font-size: 0.82rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-on-scroll { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--primary); }
+        ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .showcase-grid { grid-template-columns: 1fr; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .timeline { padding-left: 1.75rem; }
+            section { padding: 3.5rem 1.25rem; }
+            .hero { padding: 6rem 1.25rem 3rem; }
+            .profile-pic-wrapper { width: 130px; height: 130px; }
+            .trust-badges { gap: 1rem; }
+        }
+		
+		/* STANDARDIZZAZIONE CARD PROGETTI */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Contenitore immagine uniforme per tutte le card */
+.project-media {
+    margin: 0 1rem 0 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.3);
+    aspect-ratio: 16 / 9;  /* RAPPORTO FISSO 16:9 */
+    min-height: 180px;
+}
+
+.project-media img,
+.project-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* TAGLIA E CENTRA L'IMMAGINE per riempire esattamente lo spazio */
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-media img,
+.project-card:hover .project-media video {
+    transform: scale(1.02);
+}
+
+/* Rimuovo i vecchi div img sparsi (che ora sono dentro .project-media) */
+.project-body + div[style*="margin-top"],
+.project-body ~ div[style*="margin-top"] {
+    /* Questo serve a disabilitare eventuali stili inline vecchi - ma è meglio pulire l'HTML */
+}
+    </style>
+</head>
+<body>
+<div class="bg-canvas"></div>
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+    <div class="nav-container">
+        <div class="logo">OK.</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#stack">Stack</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#certs">Certifications</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+    <div class="hero-content">
+        <div class="profile-pic-wrapper">
+            <div class="profile-pic-ring"></div>
+            <div class="profile-pic-ring"></div>
+            <img src="" 
+                 alt="Omar Kilbi" class="profile-pic" id="profilePic">
+        </div>
+
+        <div class="hero-badge">
+            <span class="dot"></span> Available for opportunities
+        </div>
+        <h1>
+            Hi, I am <span class="name">Omar Kilbi</span><br>
+            <span class="role">Data Scientist &middot; AI Engineer<br>& IT Systems Administrator</span>
+        </h1>
+        <p class="hero-tagline">Building end-to-end data &amp; AI solutions from infrastructure to intelligent applications</p>
+        <p class="hero-desc">
+            4+ years of experience spanning data science, machine learning, system administration,
+            and IT infrastructure. I design, build and deploy complete solutions: AI chatbots,
+            predictive models, business intelligence dashboards, CRM systems, and automated workflows.
+            Fluent in Arabic, English, French and Italian.
+        </p>
+        <div class="hero-cta">
+            <a href="mailto:omarkillbi@gmail.com" class="btn btn-primary">
+                <i class="fas fa-envelope"></i> Get In Touch
+            </a>
+            <a href="#projects" class="btn btn-secondary">
+                <i class="fas fa-rocket"></i> View Projects
+            </a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Years Exp</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">90%</div>
+                <div class="stat-label">AI Resolution</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30+</div>
+                <div class="stat-label">Tech Stack</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Databases</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Languages</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+    <div class="section-header animate-on-scroll">
+        <div class="section-tag">Technical Arsenal</div>
+        <h2 class="section-title">Full-Stack Technology Stack</h2>
+        <p class="section-subtitle">From infrastructure to AI — the complete toolkit I use to build production-grade solutions</p>
+    </div>
+    <div class="tech-grid">
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-blue"><i class="fas fa-brain"></i></div>
+                <h3>AI / Machine Learning</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">Groq LLM</span>
+                <span class="tech-tag">TensorFlow / Keras</span>
+                <span class="tech-tag">Deep Learning</span>
+                <span class="tech-tag">RAG Systems</span>
+                <span class="tech-tag">ChromaDB (Vector)</span>
+                <span class="tech-tag">Sentence-Transformers</span>
+                <span class="tech-tag">BM25</span>
+                <span class="tech-tag">Scikit-learn</span>
+                <span class="tech-tag">OpenCV</span>
+                <span class="tech-tag">Apache Spark (Big Data)</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-purple"><i class="fas fa-server"></i></div>
+                <h3>Backend & APIs</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">Flask</span>
+                <span class="tech-tag">SQLAlchemy</span>
+                <span class="tech-tag">Pydantic</span>
+                <span class="tech-tag">JWT Auth</span>
+                <span class="tech-tag">bcrypt</span>
+                <span class="tech-tag">pyodbc</span>
+                <span class="tech-tag">REST API Design</span>
+                <span class="tech-tag">Rate Limiting</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-green"><i class="fas fa-database"></i></div>
+                <h3>Databases & Storage</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">SQL Server</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">MySQL</span>
+                <span class="tech-tag">MongoDB</span>
+                <span class="tech-tag">ChromaDB</span>
+                <span class="tech-tag">Redis</span>
+                <span class="tech-tag">Database Admin</span>
+                <span class="tech-tag">Backup &amp; Recovery</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-amber"><i class="fas fa-chart-line"></i></div>
+                <h3>Data & BI</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">Power BI</span>
+                <span class="tech-tag">Metabase</span>
+                <span class="tech-tag">Google Looker Studio</span>
+                <span class="tech-tag">Grafana</span>
+                <span class="tech-tag">Tableau</span>
+                <span class="tech-tag">Python (Pandas, NumPy)</span>
+                <span class="tech-tag">R</span>
+                <span class="tech-tag">ETL Pipelines</span>
+                <span class="tech-tag">Web Scraping</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-rose"><i class="fas fa-code"></i></div>
+                <h3>Frontend & Web</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">HTML5 / CSS3</span>
+                <span class="tech-tag">JavaScript (Vanilla)</span>
+                <span class="tech-tag">PHP</span>
+                <span class="tech-tag">Bootstrap</span>
+                <span class="tech-tag">Apache</span>
+                <span class="tech-tag">Reverse Proxy</span>
+                <span class="tech-tag">Responsive Design</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-cyan"><i class="fas fa-network-wired"></i></div>
+                <h3>Infrastructure & DevOps</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">Windows Server</span>
+                <span class="tech-tag">Linux (Admin)</span>
+                <span class="tech-tag">OpenVPN</span>
+                <span class="tech-tag">PFSense Firewall</span>
+                <span class="tech-tag">NAS Synology</span>
+                <span class="tech-tag">SFTP</span>
+                <span class="tech-tag">Nagios Monitoring</span>
+                <span class="tech-tag">SMTP</span>
+                <span class="tech-tag">Virtualization</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-teal"><i class="fas fa-cogs"></i></div>
+                <h3>ERP / CRM & Automation</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">Dolibarr ERP/CRM</span>
+                <span class="tech-tag">Akaunting</span>
+                <span class="tech-tag">n8n Automation</span>
+                <span class="tech-tag">Workflow Automation</span>
+                <span class="tech-tag">SFTP Management</span>
+                <span class="tech-tag">Cron Jobs</span>
+                <span class="tech-tag">API Integration</span>
+            </div>
+        </div>
+        <div class="tech-card animate-on-scroll">
+            <div class="tech-card-header">
+                <div class="tech-icon ti-pink"><i class="fas fa-shield-alt"></i></div>
+                <h3>Security & Networking</h3>
+            </div>
+            <div class="tech-tags">
+                <span class="tech-tag">PFSense</span>
+                <span class="tech-tag">CCNA</span>
+                <span class="tech-tag">Cisco / Huawei / Aruba</span>
+                <span class="tech-tag">VPN Server (OpenVPN)</span>
+                <span class="tech-tag">CCTV Systems</span>
+                <span class="tech-tag">IP Cameras</span>
+                <span class="tech-tag">JWT / bcrypt</span>
+                <span class="tech-tag">Rate Limiting</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+    <div class="section-header animate-on-scroll">
+        <div class="section-tag">Career Path</div>
+        <h2 class="section-title">Professional Experience</h2>
+        <p class="section-subtitle">A track record across debt management, medical industry, and tech consulting</p>
+    </div>
+    <div class="timeline">
+
+        <div class="timeline-item animate-on-scroll">
+            <div class="timeline-dot"></div>
+            <div class="timeline-header">
+                <div class="timeline-date">Feb 2024 — Present</div>
+                <div class="timeline-title">System Administrator &amp; Data Scientist &amp; AI Engineer</div>
+                <div class="timeline-company">
+                    <i class="fas fa-building"></i> PNITALIA S.R.L &amp; ETIKA Consulting — Florence, Italy
+                </div>
+            </div>
+            <p class="timeline-desc">
+                Full technical lead responsible for the entire IT ecosystem of a debt management and recovery company.
+                Spanning AI, data analytics, infrastructure, ERP, CRM, dashboards, and automated workflows.
+            </p>
+            <div class="timeline-achievements">
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Built an AI customer service chatbot achieving <strong>89-90% resolution rate</strong> — reducing human agent workload significantly</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Developed ML models for <strong>German license plate detection</strong>, <strong>vehicle classification</strong>, and <strong>toll payment prediction</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Built <strong>GDPR-compliant driver anonymization system</strong> using YOLO object detection — automatically blurs faces and bodies in toll violation images with <strong>98% accuracy</strong> before sending to debtors</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Deployed <strong>Dolibarr ERP/CRM</strong> and <strong>Akaunting</strong> accounting system for internal business operations</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Managed full database administration across <strong>SQL Server, MySQL, PostgreSQL, and MongoDB</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Developed complete <strong>debt collection system</strong> using PHP, JavaScript, HTML &amp; CSS</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Upgraded LAN infrastructure, set up <strong>Nagios server monitoring</strong> and <strong>NAS Synology</strong> for data backup</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Configured <strong>PFSense Firewall, OpenVPN server</strong>, and SFTP area for secure data exchange</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Built BI dashboards with <strong>Metabase, Grafana, Looker Studio, Power BI, and Tableau</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Set up <strong>Apache Spark</strong> environment for Big Data processing and analysis</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Automated partner workflows using <strong>n8n</strong>, reducing manual processing tasks by ~80%</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Led a team of 3 people, managing reporting, assignments, and technical roadmap</span></div>
+            </div>
+        </div>
+
+        <div class="timeline-item animate-on-scroll">
+            <div class="timeline-dot violet"></div>
+            <div class="timeline-header">
+                <div class="timeline-date">Oct 2022 — Oct 2023</div>
+                <div class="timeline-title">IT System Administrator</div>
+                <div class="timeline-company">
+                    <i class="fas fa-hospital"></i> Prince Medical Industry — Bizerta, Tunisia
+                </div>
+            </div>
+            <p class="timeline-desc">
+                Responsible for all IT infrastructure and network operations of a medical manufacturing company.
+                Managed servers, security systems, databases, and network devices.
+            </p>
+            <div class="timeline-achievements">
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Administered <strong>Linux systems</strong> and managed all server operations</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Installed and configured <strong>Routers, Switches, Firewalls, and IP Cameras</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Managed databases across <strong>SQL and MongoDB</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Configured network solutions: <strong>PFSense Firewall, NAS Synology, VPN Server</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Administered and maintained <strong>CCTV surveillance systems</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Set up and maintained all company workstations and local network infrastructure</span></div>
+            </div>
+        </div>
+
+        <div class="timeline-item animate-on-scroll">
+            <div class="timeline-dot teal"></div>
+            <div class="timeline-header">
+                <div class="timeline-date">Jan 2022 — Sep 2022</div>
+                <div class="timeline-title">Data Scientist — Internship</div>
+                <div class="timeline-company">
+                    <i class="fas fa-laptop-code"></i> LB Consulting — Tunis, Tunisia
+                </div>
+            </div>
+            <p class="timeline-desc">
+                Developed machine learning pipelines and data solutions for client projects at a software consulting firm.
+            </p>
+            <div class="timeline-achievements">
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Developed a complete <strong>Machine Learning pipeline</strong> from data collection to model deployment</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Built a <strong>Flask web interface</strong> for serving ML model predictions</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Performed <strong>web scraping</strong> using Python to collect and process external data</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Developed client-facing <strong>Power BI dashboards</strong> for business reporting</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Managed MySQL database administration for the project environment</span></div>
+            </div>
+        </div>
+
+        <div class="timeline-item animate-on-scroll">
+            <div class="timeline-dot amber"></div>
+            <div class="timeline-header">
+                <div class="timeline-date">Jan 2020 — Aug 2020</div>
+                <div class="timeline-title">IT System Administrator — Internship</div>
+                <div class="timeline-company">
+                    <i class="fas fa-car"></i> YAZAKI — Bizerta, Tunisia
+                </div>
+            </div>
+            <p class="timeline-desc">
+                Internship at a global automotive component manufacturer, contributing to IT monitoring and network infrastructure.
+            </p>
+            <div class="timeline-achievements">
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Developed a <strong>Nagios monitoring system</strong> for network and server surveillance</span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Installed and configured a full <strong>CCTV surveillance system</strong></span></div>
+                <div class="achievement"><i class="fas fa-check-circle"></i><span>Set up and configured enterprise network devices: <strong>Cisco, Huawei, and Aruba</strong></span></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="projects">
+    <div class="section-header animate-on-scroll">
+        <div class="section-tag">Featured Work</div>
+        <h2 class="section-title">Key Projects & Systems</h2>
+        <p class="section-subtitle">Production systems designed, built, and deployed end-to-end</p>
+    </div>
+    <div class="projects-grid">
+
+        <!-- Project 1 - AI Customer Service Chatbot -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe"></div>
+            <div class="project-body">
+                <div class="project-cat">AI / NLP</div>
+                <h3>AI Customer Service Chatbot</h3>
+                <p class="project-desc">
+                    Production-grade conversational AI system for a debt collection company website.
+                    Features hybrid retrieval (vector + keyword), multi-intent handling, Italian spell correction,
+                    and automatic escalation to human agents when confidence is low.
+                </p>
+            </div>
+            <div class="project-media">
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/43fc98015eb8935360fd2174c7049998191d3909/aicustomer.png" alt="AI Customer Service Chatbot Dashboard">
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-percentage"></i><strong>90%</strong>&nbsp;resolution</div>
+                <div class="metric"><i class="fas fa-database"></i><strong>918</strong>&nbsp;vectors</div>
+                <div class="metric"><i class="fas fa-circle" style="color:var(--green-light)"></i>&nbsp;Live</div>
+            </div>
+            <div class="project-tech">
+                <span>FastAPI</span><span>Groq LLM (llama-3.1)</span><span>ChromaDB</span>
+                <span>BM25</span><span>Sentence-Transformers</span><span>Vanilla JS</span><span>JWT Auth</span>
+            </div>
+        </div>
+
+        <!-- Project 2 - Agent Ticket Management Dashboard -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe teal"></div>
+            <div class="project-body">
+                <div class="project-cat">Full-Stack App</div>
+                <h3>Agent Ticket Management Dashboard</h3>
+                <p class="project-desc">
+                    Real-time agent dashboard for managing escalated chatbot tickets. Features live polling,
+                    sound notifications, per-agent client restrictions, rate limiting, full ticket lifecycle management,
+                    and SMTP automated notifications.
+                </p>
+            </div>
+            <div class="project-media">
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/222b5cf25b201d68c488b1eee610a14acada79cf/Agentdashboardf.png" alt="Agent Ticket Management Dashboard Interface">
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-bolt"></i><strong>Real-time</strong>&nbsp;polling</div>
+                <div class="metric"><i class="fas fa-lock"></i><strong>Per-agent</strong>&nbsp;access</div>
+            </div>
+            <div class="project-tech">
+                <span>FastAPI</span><span>Vanilla JS</span><span>SQL Server</span>
+                <span>JWT + bcrypt</span><span>SMTP</span><span>Rate Limiting</span>
+            </div>
+        </div>
+
+        <!-- Project 3 - License Plate Detection & Vehicle Classification -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe violet"></div>
+            <div class="project-body">
+                <div class="project-cat">Machine Learning</div>
+                <h3>License Plate Detection & Vehicle Classification</h3>
+                <p class="project-desc">
+                    ML-powered system for German license plate detection and vehicle type classification,
+                    integrated with toll prediction models for automated debt assignment in the road charge recovery workflow.
+                </p>
+            </div>
+            <div class="project-media">
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/0bd3b53c96d08262ace405ee8d8e978f84d7b0d1/annotated_12.jpeg" alt="German License Plate Detection - Annotated Result">
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-car"></i>Toll Recovery</div>
+                <div class="metric"><i class="fas fa-eye"></i>Computer Vision</div>
+            </div>
+            <div class="project-tech">
+                <span>OpenCV</span><span>TensorFlow</span><span>Python</span>
+                <span>Scikit-learn</span><span>YOLOv8</span><span>Labelimg</span>
+            </div>
+        </div>
+
+        <!-- Project 4 - Driver & Passenger Privacy Blurring -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe" style="background: linear-gradient(135deg, #e11d48 0%, #db2777 100%);"></div>
+            <div class="project-body">
+                <div class="project-cat">Computer Vision / Privacy</div>
+                <h3>Driver & Passenger Privacy Blurring</h3>
+                <p class="project-desc">
+                    GDPR-compliant AI system that automatically detects and blurs faces and bodies of drivers 
+                    and passengers in toll violation images before they are included in debt collection notices. 
+                    Built with YOLO object detection and custom labeling pipelines to ensure privacy compliance 
+                    across European jurisdictions while preserving vehicle and plate evidence for legal proceedings.
+                </p>
+            </div>
+            <div class="project-media">
+                <video controls poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect fill='%230f1a2e' width='640' height='360'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23f43f5e' font-family='Arial' font-size='18'%3E▶ Click to Play Anonymization Demo%3C/text%3E%3C/svg%3E">
+                    <source src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/dbbc8a8ceaec5e55a00a7cee8ab4dbd7b6b2d92e/Image_Anonymizer.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-percentage" style="color:var(--rose-light)"></i><strong>98%</strong>&nbsp;blur accuracy</div>
+                <div class="metric"><i class="fas fa-shield-alt" style="color:var(--rose-light)"></i>GDPR Compliant</div>
+            </div>
+            <div class="project-tech">
+                <span>YOLO</span><span>Python</span><span>OpenCV</span>
+                <span>Object Detection</span><span>Custom Labeling</span><span>GDPR</span>
+            </div>
+        </div>
+
+        <!-- Project 5 - Debt Collection CRM System -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe amber"></div>
+            <div class="project-body">
+                <div class="project-cat">CRM / Web App</div>
+                <h3>Debt Collection CRM System</h3>
+                <p class="project-desc">
+                    Custom PHP-based CRM for managing debt cases, client assignments, dispute records,
+                    and partner workflows. Includes bulk upload system for dispute processing, gestionale status
+                    fetching, and full SQL Server integration.
+                </p>
+            </div>
+            <div class="project-media">
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/fda395b03691bef8fb0112af739b4ac58cb57ebc/ACRM.png" alt="Debt Collection CRM System Interface">
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-users"></i>Multi-client</div>
+                <div class="metric"><i class="fas fa-upload"></i>Bulk Upload</div>
+            </div>
+            <div class="project-tech">
+                <span>PHP</span><span>JavaScript</span><span>SQL Server</span>
+                <span>HTML5 / CSS3</span><span>SFTP</span>
+            </div>
+        </div>
+
+        <!-- Project 6 - Company IT Infrastructure Setup -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe green"></div>
+            <div class="project-body">
+                <div class="project-cat">Infrastructure</div>
+                <h3>Company IT Infrastructure Setup</h3>
+                <p class="project-desc">
+                    End-to-end IT infrastructure setup including PFSense firewall, NAS Synology for backup,
+                    OpenVPN server, Nagios monitoring, SFTP for data exchange, Docker containerization,
+                    and Apache reverse proxy across Windows and Linux servers.
+                </p>
+            </div>
+            <div class="project-media">
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/0cd6805f8d8d98e8696bae58b5b349c34c43bbc1/server.png" alt="Company IT Infrastructure Network Diagram">
+            </div>
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-shield-alt"></i>Secure</div>
+                <div class="metric"><i class="fas fa-server"></i>Multi-server</div>
+            </div>
+            <div class="project-tech">
+                <span>PFSense</span><span>OpenVPN</span><span>Nagios</span>
+                <span>NAS Synology</span><span>Docker</span><span>Apache</span>
+            </div>
+        </div>
+
+        <!-- Project 7 - Business Intelligence Dashboards -->
+        <div class="project-card animate-on-scroll">
+            <div class="project-stripe teal"></div>
+            <div class="project-body">
+                <div class="project-cat">BI / Analytics</div>
+                <h3>Business Intelligence Dashboards</h3>
+                <p class="project-desc">
+                    Multi-platform BI ecosystem with Metabase SQL dashboards for tolling/road charge
+                    recovery and Power BI reports.
+                    Grafana real-time metrics, and Looker Studio for client-facing insights.
+                </p>
+            </div>
+            <!-- Nota: questa card non ha immagine, solo testo -->
+            <div class="project-metrics">
+                <div class="metric"><i class="fas fa-chart-bar"></i>5 platforms</div>
+                <div class="metric"><i class="fas fa-clock"></i>Real-time</div>
+            </div>
+            <div class="project-tech">
+                <span>Metabase</span><span>Power BI</span><span>Grafana</span>
+                <span>Looker Studio</span><span>Tableau</span><span>SQL Server</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PROJECT SHOWCASE: Chatbot Dashboard Video + Chat Screenshot -->
+    <div class="showcase-section animate-on-scroll">
+        <div class="section-header" style="margin-bottom:2rem;">
+            <div class="section-tag">Live Demo</div>
+            <h3 class="section-title" style="font-size:1.6rem;">AI Chatbot Command Center</h3>
+            <p class="section-subtitle">Real production dashboard managing tickets, conversations, and AI knowledge base</p>
+        </div>
+        <div class="showcase-grid">
+            <div class="showcase-media">
+                <span class="media-label"><i class="fas fa-video"></i> Dashboard Walkthrough</span>
+                <video controls poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect fill='%230f1a2e' width='640' height='360'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%233b82f6' font-family='Arial' font-size='18'%3E▶ Click to Play Dashboard Demo%3C/text%3E%3C/svg%3E">
+                    <source src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/252d5dfce2f4123ed2bc0bddb7d737ecfe0adc22/dashboard_chatbot.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="showcase-info">
+                <h3>Command Center Overview</h3>
+                <p>
+                    The admin dashboard provides full control over the AI chatbot ecosystem. 
+                    Agents can manage escalated tickets, review conversation history, update the FAQ knowledge base,
+                    configure suggestion chips, and monitor system analytics — all in real-time.
+                </p>
+                <div class="showcase-features">
+                    <div class="showcase-feature"><i class="fas fa-ticket-alt"></i> Ticket lifecycle management with status tracking</div>
+                    <div class="showcase-feature"><i class="fas fa-comments"></i> Live conversation viewer with full message history</div>
+                    <div class="showcase-feature"><i class="fas fa-book"></i> FAQ Knowledge Base with multi-language support</div>
+                    <div class="showcase-feature"><i class="fas fa-lightbulb"></i> Smart suggestion chips for faster responses</div>
+                    <div class="showcase-feature"><i class="fas fa-chart-pie"></i> Analytics &amp; MLOps insights dashboard</div>
+                    <div class="showcase-feature"><i class="fas fa-users-cog"></i> Multi-agent access with role-based permissions</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROJECT SHOWCASE: Driver Anonymization -->
+    <div class="showcase-section animate-on-scroll" style="margin-top:2.5rem;">
+        <div class="section-header" style="margin-bottom:2rem;">
+            <div class="section-tag" style="background:rgba(225,29,72,0.1);border-color:rgba(225,29,72,0.2);color:var(--rose-light);">Privacy & Compliance</div>
+            <h3 class="section-title" style="font-size:1.6rem;">Driver Anonymization System</h3>
+            <p class="section-subtitle">AI-powered privacy protection for toll violation evidence — GDPR compliant across Europe</p>
+        </div>
+        <div class="showcase-grid">
+            <div class="showcase-media">
+                <span class="media-label" style="color:var(--rose-light);"><i class="fas fa-video"></i> Anonymization Demo</span>
+                <video controls poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='360'%3E%3Crect fill='%230f1a2e' width='640' height='360'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23f43f5e' font-family='Arial' font-size='18'%3E▶ Click to Play Anonymization Demo%3C/text%3E%3C/svg%3E">
+                    <source src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/dbbc8a8ceaec5e55a00a7cee8ab4dbd7b6b2d92e/Image_Anonymizer.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="showcase-info">
+                <h3>How It Works</h3>
+                <p>
+                    When a toll violation is captured by roadside cameras, the system receives the raw image containing 
+                    the vehicle, license plate, and visible occupants. Before the image is attached to any debt collection 
+                    notice or legal document, the AI anonymization pipeline processes it in real-time.
+                </p>
+                <div class="showcase-features">
+                    <div class="showcase-feature"><i class="fas fa-user-secret" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>YOLO-based detection</strong> identifies driver and passenger faces & bodies</div>
+                    <div class="showcase-feature"><i class="fas fa-magic" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>Smart blur algorithm</strong> preserves vehicle evidence while obscuring personal identity</div>
+                    <div class="showcase-feature"><i class="fas fa-balance-scale" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>GDPR compliant</strong> — meets European privacy standards for automated image processing</div>
+                    <div class="showcase-feature"><i class="fas fa-bolt" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>Real-time processing</strong> — integrated into the debt collection workflow pipeline</div>
+                    <div class="showcase-feature"><i class="fas fa-chart-line" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>98% detection accuracy</strong> on driver and passenger anonymization</div>
+                    <div class="showcase-feature"><i class="fas fa-tags" style="background:rgba(225,29,72,0.12);color:var(--rose-light);"></i> <strong>Custom labeling pipeline</strong> for fine-tuned object detection and quality assurance</div>
+                </div>
+                <div style="margin-top:1.5rem; padding:1rem; background:rgba(225,29,72,0.05); border:1px solid rgba(225,29,72,0.15); border-radius:10px;">
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;"><i class="fas fa-info-circle" style="color:var(--rose-light); margin-right:0.4rem;"></i><strong>Business Impact:</strong></p>
+                    <p style="font-size:0.82rem; color:var(--text-dim); line-height:1.6;">
+                        This system enables the debt collection company to include photographic evidence of toll violations 
+                        in customer communications without violating privacy regulations. Previously, images had to be 
+                        excluded entirely or manually redacted — a slow, error-prone process. The automated solution 
+                        reduced processing time from hours to seconds while ensuring full legal compliance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD SHOWCASE: Power BI / Metabase mockups -->
+    <div class="dashboard-showcase animate-on-scroll">
+        <div class="section-header" style="margin-bottom:2rem;">
+            <div class="section-tag">Delivered Projects</div>
+            <h3 class="section-title" style="font-size:1.6rem;">Business Intelligence Dashboards</h3>
+            <p class="section-subtitle">Real-world analytics dashboards built for production environments</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="db-overlay"></div>
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/42307ecc81adbcd2768217525e7d8a8973617878/dashboard_powerbi.png" alt="Power BI Dashboard">
+                <div class="dashboard-card-body">
+                    <h4>Power BI — Sales Analytics</h4>
+                    <p>Interactive revenue tracking with drill-down capabilities, KPI cards, and trend analysis for executive reporting.</p>
+                    <span class="db-tag">Power BI</span>
+                    <span class="db-tag" style="background:rgba(5,150,105,0.1);color:var(--green-light);">Delivered</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="db-overlay"></div>
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/42307ecc81adbcd2768217525e7d8a8973617878/dashboard_analytics.png" alt="Analytics Dashboard">
+                <div class="dashboard-card-body">
+                    <h4>Dark Analytics — E-Commerce</h4>
+                    <p>Real-time sales monitoring with customer segmentation, inventory tracking, and performance metrics.</p>
+                    <span class="db-tag">Custom Build</span>
+                    <span class="db-tag" style="background:rgba(5,150,105,0.1);color:var(--green-light);">Delivered</span>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="db-overlay"></div>
+                <img src="https://raw.githubusercontent.com/Omarkillbi/omarkillbi.github.io/42307ecc81adbcd2768217525e7d8a8973617878/dashboard_metabase.png" alt="Metabase Dashboard">
+                <div class="dashboard-card-body">
+                    <h4>Metabase — Toll Recovery BI</h4>
+                    <p>Multi-chart SQL dashboard for road charge recovery analysis with UNION ALL queries and geographic filters.</p>
+                    <span class="db-tag">Metabase</span>
+                    <span class="db-tag" style="background:rgba(5,150,105,0.1);color:var(--green-light);">Delivered</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+<!-- EDUCATION -->
+<section id="education">
+    <div class="section-header animate-on-scroll">
+        <div class="section-tag">Academic Background</div>
+        <h2 class="section-title">Education & Training</h2>
+        <p class="section-subtitle">A multidisciplinary foundation blending computer science, data science, and sustainable business</p>
+    </div>
+    <div class="edu-grid">
+        <div class="edu-card animate-on-scroll">
+            <div class="edu-icon ti-blue"><i class="fas fa-seedling"></i></div>
+            <div class="edu-year">2023 — 2025</div>
+            <div class="edu-degree">Bachelor — Sustainable Business for Social Challenges</div>
+            <div class="edu-school"><i class="fas fa-map-marker-alt" style="color:var(--accent-light);margin-right:0.4rem;font-size:0.8rem;"></i>University of Firenze, Italy</div>
+        </div>
+        <div class="edu-card animate-on-scroll">
+            <div class="edu-icon ti-purple"><i class="fas fa-chart-network"></i></div>
+            <div class="edu-year">2020 — 2022</div>
+            <div class="edu-degree">Master Degree — Data Science</div>
+            <div class="edu-school"><i class="fas fa-map-marker-alt" style="color:var(--accent-light);margin-right:0.4rem;font-size:0.8rem;"></i>University of Science of Bizerte, Tunisia</div>
+        </div>
+        <div class="edu-card animate-on-scroll">
+            <div class="edu-icon ti-cyan"><i class="fas fa-network-wired"></i></div>
+            <div class="edu-year">2017 — 2020</div>
+            <div class="edu-degree">Bachelor — Computer Networks & Telecommunications</div>
+            <div class="edu-school"><i class="fas fa-map-marker-alt" style="color:var(--accent-light);margin-right:0.4rem;font-size:0.8rem;"></i>University of Science of Bizerte, Tunisia</div>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+    <div class="section-header animate-on-scroll">
+        <div class="section-tag">Credentials</div>
+        <h2 class="section-title">Certifications & Skills</h2>
+        <p class="section-subtitle">Validated expertise across AI, networking, data, and programming</p>
+    </div>
+    <div class="certs-grid">
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-blue"><i class="fas fa-brain"></i></div>
+            <div class="cert-info">
+                <h4>Intro to Data &amp; Data Science</h4>
+                <p>Certified &middot; Data fundamentals</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-teal"><i class="fas fa-chart-bar"></i></div>
+            <div class="cert-info">
+                <h4>R Programming</h4>
+                <p>Certified &middot; Statistical computing</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-purple"><i class="fas fa-robot"></i></div>
+            <div class="cert-info">
+                <h4>Deep Learning with TensorFlow</h4>
+                <p>Certified &middot; Neural networks &amp; DL</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-amber"><i class="fas fa-network-wired"></i></div>
+            <div class="cert-info">
+                <h4>CCNA</h4>
+                <p>Certified &middot; Cisco Networking</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-green"><i class="fab fa-python"></i></div>
+            <div class="cert-info">
+                <h4>Python Programming</h4>
+                <p>Certified &middot; Core to advanced Python</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-cyan"><i class="fas fa-database"></i></div>
+            <div class="cert-info">
+                <h4>SQL</h4>
+                <p>Certified &middot; Database querying &amp; admin</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-rose"><i class="fab fa-microsoft"></i></div>
+            <div class="cert-info">
+                <h4>Microsoft Office 365</h4>
+                <p>Certified &middot; Productivity suite</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-pink"><i class="fas fa-language"></i></div>
+            <div class="cert-info">
+                <h4>English C1 — IELTS</h4>
+                <p>Proficient &middot; Academic English</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-blue"><i class="fas fa-shield-alt"></i></div>
+            <div class="cert-info">
+                <h4>Security &amp; Compliance</h4>
+                <p>JWT, bcrypt, Rate Limiting, VPN Access</p>
+            </div>
+        </div>
+        <div class="cert-card animate-on-scroll">
+            <div class="cert-icon ci-amber"><i class="fas fa-cloud"></i></div>
+            <div class="cert-info">
+                <h4>Cloud &amp; Infrastructure</h4>
+                <p>Docker, Windows Server, Linux, VPN</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="section-header animate-on-scroll" style="margin-top:4rem;">
+        <div class="section-tag">Multilingual</div>
+        <h2 class="section-title">Languages</h2>
+        <p class="section-subtitle">Communicating effectively across cultures and borders</p>
+    </div>
+    <div class="lang-grid">
+        <div class="lang-card animate-on-scroll">
+            <div class="lang-name">Arabic / Tunisian</div>
+            <span class="lang-level ll-native">Native</span>
+            <div class="lang-desc">Mother tongue</div>
+        </div>
+        <div class="lang-card animate-on-scroll">
+            <div class="lang-name">English</div>
+            <span class="lang-level ll-c1">C1 — Proficient</span>
+            <div class="lang-desc">IELTS certified &middot; Full professional</div>
+        </div>
+        <div class="lang-card animate-on-scroll">
+            <div class="lang-name">French</div>
+            <span class="lang-level ll-c1">B2/C1 — Independent</span>
+            <div class="lang-desc">Strong spoken &amp; written</div>
+        </div>
+        <div class="lang-card animate-on-scroll">
+            <div class="lang-name">Italian</div>
+            <span class="lang-level ll-b2">B2 — Independent</span>
+            <div class="lang-desc">Living &amp; working in Italy</div>
+        </div>
+    </div>
+
+    <!-- Volunteer -->
+    <div class="section-header animate-on-scroll" style="margin-top:4rem;">
+        <div class="section-tag">Community</div>
+        <h2 class="section-title">Volunteering</h2>
+    </div>
+    <div class="volunteer-grid">
+        <div class="volunteer-card animate-on-scroll">
+            <div class="vol-icon ti-amber"><i class="fas fa-rotate"></i></div>
+            <div>
+                <div class="vol-title">Member — Rotaract Club of Fiesole</div>
+                <div class="vol-period">2024 — Present &middot; Fiesole, Italy</div>
+            </div>
+        </div>
+        <div class="volunteer-card animate-on-scroll">
+            <div class="vol-icon ti-purple"><i class="fas fa-users"></i></div>
+            <div>
+                <div class="vol-title">HR — Rotaract Club of Bizerte</div>
+                <div class="vol-period">2022 — 2023 &middot; Bizerte, Tunisia</div>
+            </div>
+        </div>
+        <div class="volunteer-card animate-on-scroll">
+            <div class="vol-icon ti-rose"><i class="fas fa-heart"></i></div>
+            <div>
+                <div class="vol-title">Member — Croce Rossa Tunisia</div>
+                <div class="vol-period">2020 — 2022 &middot; Tunisia</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+    <div class="contact-card animate-on-scroll">
+        <h2>Let us Build Something Together</h2>
+        <p>
+            I am open to new opportunities in data science, AI engineering, and systems architecture.
+            Whether you need a full-stack AI solution, infrastructure overhaul, or data pipeline — let us talk.
+        </p>
+        <div class="contact-links">
+            <a href="mailto:omarkillbi@gmail.com" class="contact-link">
+                <i class="fas fa-envelope"></i> omarkillbi@gmail.com
+            </a>
+            <a href="https://linkedin.com/in/omarkilbi" class="contact-link" target="_blank" rel="noopener">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/omarkillbi" class="contact-link" target="_blank" rel="noopener">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2026 Omar Kilbi &middot; Built with passion</p>
+</footer>
+
+<script>
+    // Floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (8 + Math.random() * 12) + 's';
+        p.style.animationDelay = Math.random() * 10 + 's';
+        p.style.opacity = 0.2 + Math.random() * 0.4;
+        particlesContainer.appendChild(p);
+    }
+
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Mobile menu
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    menuBtn.addEventListener('click', () => {
+        const open = navLinks.style.display === 'flex';
+        navLinks.style.display = open ? 'none' : 'flex';
+        if (!open) {
+            Object.assign(navLinks.style, {
+                position: 'absolute', top: '100%', left: '0', right: '0',
+                flexDirection: 'column', background: 'rgba(8,13,20,0.97)',
+                padding: '1.25rem 2rem', backdropFilter: 'blur(24px)',
+                borderBottom: '1px solid rgba(148,163,184,0.08)'
+            });
+        }
+    });
+
+    // Profile picture: replace with real photo when available
+    // To use your own photo, replace the src below with your image path
+    // document.getElementById('profilePic').src = 'your-photo.jpg';
+</script>
+</body>
+</html>
